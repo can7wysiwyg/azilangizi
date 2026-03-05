@@ -98,8 +98,7 @@ AuthUser.get("/auth/user-details", verify, async (req, res) => {
   try {
     if (!req.user)
       return res.status(400).json({ msg: "User does not exist." });
-    console.log(req.user)
-
+   
     res.json({ user: req.user });
   } catch (error) {
     console.log("Server Error while finding account details", error.message);

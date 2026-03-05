@@ -10,6 +10,8 @@ import helmet from "helmet"
 import mongoose from "mongoose";
 import AuthUser from "./routes/AuthUser.js"
 import Home from "./routes/Home.js"
+import AddReport from "./private/AddReport.js"
+import PublicReports from "./routes/PublicReports.js"
 mongoose.connect(process.env.MONGO_DEVT_URL)
 
 const db = mongoose.connection
@@ -76,6 +78,8 @@ app.use(
 
 app.use(AuthUser)
 app.use(Home)
+app.use(AddReport)
+app.use(PublicReports)
 
 app.listen(port, () => {
     console.log(`your server is running on port ${port}`)

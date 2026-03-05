@@ -1,6 +1,6 @@
 import User from '../models/UserModel.js'
 
-export const aziWare = async(req, res, next) => {
+ const aziWare = async(req, res, next) => {
 
     try {
 
@@ -20,3 +20,5 @@ export const aziWare = async(req, res, next) => {
     }
 }
 
+
+export default aziWare
