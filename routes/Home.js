@@ -110,6 +110,30 @@ try {
 })
 
 
+Home.get('/updatealareport/:id', async(req, res) => {
+
+    let msg;
+try {
+    const {id} = req.params
+
+    if(!id) {
+       return res.render('updatealareport', {msg: `Authorization NOT available, ${error.message}` })   
+    }
+
+    res.render('updatealareport', {msg})
+    
+} catch (error) {
+    console.log(`failure to load managereport page, ${error.message}`)
+
+    return res.render('updatealareport', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
+
 
 Home.get('/reports', async(req, res) => {
 
