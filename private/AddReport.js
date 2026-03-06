@@ -1,3 +1,5 @@
+// manage reports and view singular
+
 import express from "express"
 import verify from "../middleware/verify.js"
 const AddReport = express.Router() 
@@ -69,6 +71,32 @@ res.json({message: "Successfully added new report!"})
     return res.json({ msg: `cannot add report, ${error.message}` });
   }
 });
+
+
+AddReport.get('/view-reports', verify, aziWare, async(req, res) => {
+  
+  try {
+
+    if(!req.user) {
+      return res.json({msg: "Access not available"})
+    }
+
+    const reports = await Report.find({owner: req.user._id})
+
+     if(!reports || reports.length === 0) {
+      return res.json({msg: "You have no reports"})
+     }
+
+       return res.json({reports})
+    
+  } catch (error) {
+     console.log(`cannot view reports, ${error.message}`);
+    return res.json({ msg: `cannot view reports, ${error.message}` });
+    
+  }
+
+
+})
 
 
 export default AddReport

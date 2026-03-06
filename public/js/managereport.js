@@ -1,5 +1,5 @@
 const mngCon = document.getElementById('mngCon')
-const userKey = localStorage.getItem('userKey')
+const userkey = localStorage.getItem('userKey')
 
 
 async function LoadManage() {
@@ -16,6 +16,35 @@ async function LoadManage() {
             </div>
         
         `;
+
+       const request = await fetch('/view-reports', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${userkey}`
+        }
+       })
+
+    const response = await request.json() 
+
+    if(response.msg) {
+        return mngCon.innerHTML = `
+        <p class="text-center">${response.msg} </p>
+        
+        `
+    }
+
+
+    mngCon.innerHTML = `
+    <div class="container mt-4">
+    <div class="text-center">
+    <p>Manage and track reports </p>
+   </div>
+
+
+    </div>
+    `
+
         
     } catch (error) {
         return mngCon.innerHTML = `
