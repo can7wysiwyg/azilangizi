@@ -109,6 +109,63 @@ AddReport.delete('/erase-report/:id', verify, aziWare, async(req, res) => {
 
 })
 
+AddReport.put('/update-report/:id', verify, aziWare, async(req, res) => {
+  try {
+    if(!req.user) {
+      return res.json({msg: "Access not available"})
+    }
+
+    const {id} = req.params;
+    if(!id) {
+      return res.json({msg: "Resource identifier is missing!"})
+    }
+
+    const { title, description, rType } = req.body;
+
+    let updateData = { title, description, rType };
+
+    const report = await Report.findOne({_id: id, owner: req.user._id});
+
+    if(!report) {
+      return res.json({msg: "File does not exists!"})
+    }
+
+    
+    const rFile = req.files?.rFile;
+
+    if (rFile) {
+     
+      if (report?.rFile) {
+        const publicId = report.rFile.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(`azilangizi_files/${publicId}`, {
+          resource_type: "raw",
+          api_key: process.env.API_KEY,
+          api_secret: process.env.API_SECRET,
+          cloud_name: process.env.CLOUD_NAME
+        });
+      }
+
+       const upload = await cloudinary.uploader.upload(rFile.tempFilePath, {
+        folder: "azilangizi_files",
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET,
+        cloud_name: process.env.CLOUD_NAME
+      });
+
+      updateData.rFile = upload.secure_url;
+      fs.unlinkSync(rFile.tempFilePath);
+    }
+
+    await Report.findByIdAndUpdate(id, updateData, { new: true });
+
+    return res.json({message: "Successfully updated the report!"});
+
+  } catch (error) {
+    console.log(`cannot update report, ${error.message}`);
+    return res.json({ msg: `cannot update report, ${error.message}` });
+  }
+})
+
 
 AddReport.get('/view-reports', verify, aziWare, async(req, res) => {
   

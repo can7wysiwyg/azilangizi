@@ -98,6 +98,90 @@ updCon.innerHTML = `
 
 `
 
+
+document.getElementById('upForm').addEventListener('submit', async(e) => {
+    e.preventDefault();
+             const statusMessage = document.getElementById('statusMessage')
+    try {
+        const title = document.getElementById('title').value 
+                const description = document.getElementById('description').value 
+                const rType = document.getElementById('rType').value
+                const file = document.getElementById("repor")
+                 const hasFile = file.files && file.files.length > 0;
+
+                const submitBtn = document.getElementById('submitBtn') 
+
+                submitBtn.disabled = true
+
+                
+
+                let res;
+                 if (hasFile) {
+           
+            const formData = new FormData();
+            formData.append('title', title)
+                formData.append('description', description)
+                formData.append('rType', rType) 
+            formData.append('rFile', file.files[0]);
+
+            res = await fetch(`/update-report/${rsR.report._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${userkey}`
+                
+                },
+                body: formData
+            });
+        } else {
+        
+            res = await fetch(`/update-report/${rsR.report._id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userkey}`
+                },
+                body: JSON.stringify({
+                    title,
+                    description,
+                    rType
+                })
+            });
+        }
+     
+       const req = await res.json() 
+
+       if(req.msg) {
+        submitBtn.disabled = false
+
+        return statusMessage.innerHTML = `
+                 <span>${req.msg} </span>
+                `
+        
+
+
+       } else if(req.message) { 
+
+        submitBtn.disabled = false
+
+ alert(req.message) 
+
+ window.location.reload()
+
+       }
+
+      
+
+        
+    } catch (error) {
+        return statusMessage.innerHTML = `
+                 <span>${error.message} </span>
+                `
+        
+    }
+
+
+})
+
     
 } catch (error) {
     return updCon.innerHTML = `
