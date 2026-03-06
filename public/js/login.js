@@ -36,11 +36,7 @@ try {
           Sign In
         </button>
 
-        <div class="text-center small">
-          Don't have an account? 
-          <a href="/register" class="link">Sign up</a>
-        </div>
-      </form>
+              </form>
    
     
     `

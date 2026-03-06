@@ -61,7 +61,28 @@ async function LoadDashAla() {
       </div>
 
 
-      <!-- second -->
+        <!-- second -->
+                         <div class="col-md-6 mb-4">
+                               <div class="card"
+        style="background:#ffffff; border-radius:16px;
+               box-shadow:0 12px 25px rgba(0,0,0,0.08);">
+        <div class="card-body text-center" style="padding:40px;">
+          <i class="fas fa-user"
+             style="font-size:56px; color: #e8b87d;"></i>
+        
+                    <a href="/userprofile"
+             style="display:inline-block; margin-top:15px;
+                    background:#e8b87d; color: white;
+                    padding:10px 26px; border-radius:24px;
+                    text-decoration:none; font-weight:500;">
+                Manage Account
+          </a>
+        </div>
+      </div>
+      </div>
+
+
+      <!-- third -->
 
       <div class="col-md-6 mb-4">
                                <div class="card"
