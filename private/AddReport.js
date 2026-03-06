@@ -72,6 +72,43 @@ res.json({message: "Successfully added new report!"})
   }
 });
 
+AddReport.delete('/erase-report/:id', verify, aziWare, async(req, res) => {
+
+ try {
+    if(!req.user) {
+      return res.json({msg: "Access not available"})
+    }
+
+    const {id} = req.params 
+
+    if(!id) {
+      return res.json({msg: "Resource identifier is missing!"})
+    }
+  
+
+   const report = await Report.findOne({_id: id, owner: req.user._id})
+   
+   if(!report) {
+    return res.json({msg: "Resource does not exist!"})
+   }
+  
+
+   await Report.findByIdAndDelete(id)
+
+   return res.json({message: "Successfully deleted the report!"})
+   
+  
+
+
+ } catch (error) {
+    console.log(`cannot add report, ${error.message}`);
+    return res.json({ msg: `cannot add report, ${error.message}` }); 
+   
+ }
+
+
+})
+
 
 AddReport.get('/view-reports', verify, aziWare, async(req, res) => {
   
