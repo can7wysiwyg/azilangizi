@@ -37,8 +37,8 @@ async function RoleCheck() {
 
     if(user.role === "azilangizi") {
         return authCont.innerHTML = `
-        <a class="ps-navbar__link" href="/addreport" onclick="setActive(this); showSection('account')">
-                            <i class="fas fa-plus"></i>ADD REPORT
+        <a class="ps-navbar__link" href="/dashboardala" onclick="setActive(this); showSection('account')">
+                            <i class="fas fa-user"></i>DASHBOARD
                         </a>
 
         

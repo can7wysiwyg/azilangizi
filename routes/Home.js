@@ -74,6 +74,43 @@ try {
 })
 
 
+Home.get('/dashboardala', async(req, res) => {
+
+    let msg;
+try {
+
+    res.render('dashboardala', {msg})
+    
+} catch (error) {
+    console.log(`failure to load dashboardala page, ${error.message}`)
+
+    return res.render('dashboardala', {msg: `failure to load dashboardala page, ${error.message}` })
+}
+
+
+
+})
+
+
+Home.get('/managereport', async(req, res) => {
+
+    let msg;
+try {
+
+    res.render('managereport', {msg})
+    
+} catch (error) {
+    console.log(`failure to load managereport page, ${error.message}`)
+
+    return res.render('managereport', {msg: `failure to load managereport page, ${error.message}` })
+}
+
+
+
+})
+
+
+
 Home.get('/reports', async(req, res) => {
 
     let msg;
