@@ -32,6 +32,10 @@ async function LoadReports() {
                 `
             }
 
+            if (page >= repoDocs.totalPages) hasMore = false;
+    page += 1; 
+
+
             
 
 
@@ -79,6 +83,9 @@ document.addEventListener('change', async(e) => {
           }
        
         window.location.search = `?rType=${val}&page=1&limit=20`
+        if (page >= repoDocs.totalPages) hasMore = false;
+    page += 1; 
+
 
           showreports.innerHTML = `
                         <div class="text-center" style="padding: 40px;">
@@ -199,6 +206,41 @@ document.addEventListener('change', async(e) => {
  }
 
 }
+
+
+window.addEventListener("scroll", async () => {
+
+ if (isLoading || !hasMore) return;
+
+ if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+
+    isLoading = true;
+    page++;
+
+    const rType = new URLSearchParams(window.location.search).get("rType") || "all";
+
+    const res = await fetch(`/reports?rType=${rType}&page=${page}&limit=${limit}`, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+    });
+
+    const data = await res.json();
+
+    if (!data.reports.length) {
+        hasMore = false;
+        return;
+    }
+
+    const showreports = document.getElementById("showreports");
+
+    showreports.insertAdjacentHTML(
+        "beforeend",
+        MyReports({ reports: data.reports })
+    );
+
+    isLoading = false;
+ }
+
+});
 
 
 
