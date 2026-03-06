@@ -56,7 +56,7 @@ async function AddReport() {
 
             
             <div style="margin-bottom:24px;">
-              <label style="display:block; margin-bottom:8px; font-weight:600;">Designation <span style="color:red;">*</span></label>
+              <label style="display:block; margin-bottom:8px; font-weight:600;">Report Type <span style="color:red;">*</span></label>
               <select id="rType" required style="width:100%; padding:14px; border:1px solid #ddd; border-radius:8px;">
                 <option value="">Choose Report Type</option>
                 ${response.repoType.map((d) => `<option value="${d}">${d}</option>`).join("")}

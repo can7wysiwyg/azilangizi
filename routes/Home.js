@@ -1,6 +1,7 @@
 // website pages
 import express from "express";
 const Home = express.Router()
+import Report from "../models/ReportModel.js" 
    
 
 Home.get('/', async(req, res) => {
@@ -71,6 +72,53 @@ try {
 
 
 })
+
+
+Home.get('/reports', async(req, res) => {
+
+    let msg;
+    let repoDocs;
+try {
+        let { rType = "all", page = 1, limit = 20 } = req.query;
+           let filter = {}
+            page = parseInt(page);
+    limit = parseInt(limit);
+    const skip = (page - 1) * limit;
+      
+    if (rType && rType !== "all") {
+    filter.rType = rType;
+}
+
+
+     const reports = await Report.find(filter).skip(skip).limit(limit);
+     if(!reports || reports.length === 0) {
+        return res.render('reports', {repoDocs, msg: "There are no reports at the moment" })
+
+     }
+     const totalDocs = await Report.countDocuments(filter) 
+
+
+    repoDocs = {
+      reports,
+      total: totalDocs,
+      page,
+      totalPages: Math.ceil(totalDocs / limit),
+    }
+
+
+
+    res.render('reports', {repoDocs, msg})
+    
+} catch (error) {
+    console.log(`failure to load addreport page, ${error.message}`)
+
+    return res.render('addreport',  {repoDocs,  msg: `failure to load addreport page, ${error.message}` })
+}
+
+
+
+})
+
 
 
 
