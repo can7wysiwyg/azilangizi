@@ -161,7 +161,7 @@ dataObj.map(item => `
 
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
 
-        <a href="${item.name}" 
+        <a href="/userreport/${item._id}" 
            class="btn btn-sm btn-primary"
            style="display:flex; align-items:center; gap:5px;">
            <i class="fas fa-file-alt"></i>

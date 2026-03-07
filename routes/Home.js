@@ -132,6 +132,30 @@ try {
 
 })
 
+
+Home.get('/userreport/:id', async(req, res) => {
+
+    let msg;
+try {
+    const {id} = req.params
+
+    if(!id) {
+       return res.render('userreport', {msg: `Authorization NOT available, ${error.message}` })   
+    }
+
+    res.render('userreport', {msg})
+    
+} catch (error) {
+    console.log(`failure to load managereport page, ${error.message}`)
+
+    return res.render('userreport', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
 Home.get('/adminsite', async(req, res) => {
 
     let msg;
