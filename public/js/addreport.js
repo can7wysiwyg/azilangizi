@@ -113,19 +113,13 @@ async function AddReport() {
                 const file = document.getElementById("repor").files[0];
                 const submitBtn = document.getElementById('submitBtn') 
 
-                submitBtn.disabled = true
+                
 
-
-                addContainer.innerHTML = `
-         
-                  <div class="loading-spinner text-center" style="margin-top: 26px">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p class="text-muted mt-2">Adding report...</p>
-            </div>
-        
-        `;
+                
+        submitBtn.disabled = true
+        submitBtn.innerHTML = `
+            <span class="spinner-border spinner-border-sm" role="status"></span> Uploading...
+        `
 
 
                 let formData = new FormData() 
@@ -150,6 +144,10 @@ async function AddReport() {
 
                 if(result.msg) {
                      submitBtn.disabled = false
+                      submitBtn.innerHTML = `
+        
+        `
+
 
                     return statusMessage.innerHTML = `
                     <span>${result.msg} </span>

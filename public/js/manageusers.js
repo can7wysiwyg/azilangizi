@@ -1,6 +1,6 @@
 const mnUsrs = document.getElementById('mnUsrs')
 const userkey = localStorage.getItem('userKey')
-
+let params = new URLSearchParams();
 
 async function LoadUsrs() {
 
@@ -44,7 +44,12 @@ async function LoadUsrs() {
 
 
         if(user?.role === "admin") { 
-            const ftUsrs = await fetch('/admin-users', {
+
+           params.set('district', "")
+           params.set('hasReports', "")
+           
+
+            const ftUsrs = await fetch(`/admin-users?${params.toString()}`, {
                 method: 'GET',
                 headers : {
                 'Content-Type': 'application/json',
@@ -119,10 +124,8 @@ async function LoadUsrs() {
              
              
              `
-        }
 
-
-    function ShowUsers(dataObj) {
+function ShowUsers(dataObj) {
         return `
 <div class="row g-4 ">
 
@@ -190,15 +193,122 @@ dataObj.map(item => `
     }    
        
 
+    const showusers = document.getElementById('showusers')
+
 document.addEventListener('change', async(e) => {
 
 if(e.target.id === "districtFilter") {
   const val = e.target.value 
-  console.log(val)
+
+ showusers.innerHTML = `
+         
+                  <div class="loading-spinner text-center" style="margin-top: 26px">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2">Loading Users...</p>
+            </div>
+        
+        `;
+
+               params.set('district', val)
+           params.set('hasReports', "")
+           
+
+            const ftUsrs = await fetch(`/admin-users?${params.toString()}`, {
+                method: 'GET',
+                headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userkey}`
+            }
+            })
+
+            const resUsrs = await ftUsrs.json();
+            
+            const users = resUsrs.users 
+
+             if(resUsrs.msg) {
+                return showusers.innerHTML = `
+                <p class="text-center">${resUsrs.msg} </p>
+                `
+             }  
+
+
+             showusers.innerHTML = `
+             <div id="showusers" class="text-center" style="margin-top: 3.5rem;">
+  ${ShowUsers(users)}
+
+  </div>
+
+             
+             
+             `
+           
+
+
+    
+} else if(e.target.id === "reportFilter" ) {
+
+  const value  = e.target.value 
+
+ showusers.innerHTML = `
+         
+                  <div class="loading-spinner text-center" style="margin-top: 26px">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2">Loading Users...</p>
+            </div>
+        
+        `;
+
+               params.set('district', document.getElementById('districtFilter').value)
+           params.set('hasReports', value)
+           
+
+            const ftUsrs = await fetch(`/admin-users?${params.toString()}`, {
+                method: 'GET',
+                headers : {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userkey}`
+            }
+            })
+
+            const resUsrs = await ftUsrs.json();
+            
+            const users = resUsrs.users 
+
+             if(resUsrs.msg) {
+                return showusers.innerHTML = `
+                <p class="text-center">${resUsrs.msg} </p>
+                `
+             }  
+
+
+             showusers.innerHTML = `
+             <div id="showusers" class="text-center" style="margin-top: 3.5rem;">
+  ${ShowUsers(users)}
+
+  </div>
+
+             
+             
+             `
+  
+
+
+
 }
 
 })
 
+
+
+
+        }
+
+
+    
         
     } catch (error) {
         return mnUsrs.innerHTML = `
