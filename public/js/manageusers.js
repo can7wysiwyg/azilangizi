@@ -168,7 +168,7 @@ dataObj.map(item => `
            Reports
         </a>
 
-        <button class="btn btn-sm btn-danger"
+        <button data-id="${item._id}" class="btn btn-sm btn-danger my-delete"
            style="display:flex; align-items:center; gap:5px;">
            <i class="fas fa-trash"></i>
            Delete
@@ -302,6 +302,49 @@ if(e.target.id === "districtFilter") {
 
 })
 
+
+
+
+document.querySelectorAll('.my-delete').forEach(btn => {
+  btn.addEventListener('click', async() => {
+       const rId = btn.dataset.id 
+       btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+
+          const rDlt = await fetch(`/admin/delete-user/${rId}`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userkey}`
+            }
+          })  
+
+
+          const rsDlt  = await rDlt.json()
+
+          if(rsDlt.msg) {
+            btn.disabled = false;
+            btn.innerHTML = '';
+             alert(rsDlt.msg)
+            
+
+
+          }  else if(rsDlt.message) {
+            btn.disabled = false;
+            btn.innerHTML = '';
+             alert(rsDlt.message)
+            window.location.reload()
+
+
+          }
+          
+          
+
+      
+
+  })
+})
 
 
 

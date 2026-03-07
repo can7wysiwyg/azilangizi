@@ -84,4 +84,28 @@ AdminUsers.get('/admin-users', verify, adminWare, async(req, res) => {
 });
 
 
+AdminUsers.delete('/admin/delete-user/:id', verify, adminWare, async(req, res) => {
+
+    try {
+        const {id} = req.params;
+
+        if(!id) {
+            return res.json({msg: "Access not available"})
+        }
+
+
+        await User.findByIdAndDelete(id)
+        await Report.deleteMany({owner: id})
+
+        return res.json({message: "Successfully deleted user and their reports!"})
+        
+    } catch (error) {
+        console.log(`failure to delete user, ${error.message}`);
+        return res.json({ msg: `failure to delete user, ${error.message}` });
+
+    }
+
+
+})
+
 export default AdminUsers
