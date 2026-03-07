@@ -61,10 +61,11 @@ app.use(
         "https://res.cloudinary.com",              
       ],
 
-      connectSrc: [
-        "'self'",
-        "https://cdnjs.cloudflare.com"   
-      ],
+     connectSrc: [
+  "'self'",
+  "https://cdnjs.cloudflare.com",
+  "https://malawi-api.onrender.com"
+],
       fontSrc: [
         "'self'",
         "https://fonts.gstatic.com",

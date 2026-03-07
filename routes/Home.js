@@ -132,6 +132,43 @@ try {
 
 })
 
+Home.get('/adminsite', async(req, res) => {
+
+    let msg;
+try {
+    
+    res.render('adminsite', {msg})
+    
+} catch (error) {
+    console.log(`failure to load adminsite page, ${error.message}`)
+
+    return res.render('adminsite', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
+Home.get('/addalangizi', async(req, res) => {
+
+    let msg;
+try {
+    
+    res.render('addalangizi', {msg})
+    
+} catch (error) {
+    console.log(`failure to load addalangizi page, ${error.message}`)
+
+    return res.render('addalangizi', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
+
 
 
 

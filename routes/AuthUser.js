@@ -4,11 +4,12 @@ import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import verify from "../middleware/verify.js";
+import adminWare from "../middleware/adminWare.js";
 import { encryptId, decryptId } from "../middleware/cryptic.js";
 
-AuthUser.post("/auth/register", async (req, res) => {
+AuthUser.post("/auth/register", verify, adminWare, async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, location } = req.body;
 
     if (!name || !email || !password) {
       return res.json({ msg: `Field cannot be empty!` });
@@ -36,9 +37,10 @@ AuthUser.post("/auth/register", async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      location
     });
 
-    res.json({ message: "Account Created Successfully! You Can Sign In" });
+    res.json({ message: "Account Created Successfully! User can sign in" });
   } catch (error) {
     return res.json({ msg: `Failed to register, ${error.message}` });
   }

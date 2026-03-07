@@ -44,11 +44,11 @@ async function RoleCheck() {
         
         
         `
-    }  else if(user.role === "user") {
+    }  else if(user.role === "admin") {
 
         return authCont.innerHTML = `
-        <a class="ps-navbar__link" href="/profile" onclick="setActive(this); showSection('account')">
-                            <i class="fas fa-user"></i>Profile
+        <a class="ps-navbar__link" href="/adminsite" onclick="setActive(this); showSection('account')">
+                            <i class="fas fa-user"></i>Admin
                         </a>
 
         
