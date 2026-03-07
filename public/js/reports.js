@@ -24,7 +24,11 @@ async function LoadReports() {
             const msg = window.msg || "";
             const repoDocs = window.repoDocs || {};
 
-
+         const reqUsers = await fetch('/users')
+         const resUsers = await reqUsers.json()
+         const users = resUsers?.users
+ 
+                       
             if(msg) {
                 return reportsContainer.innerHTML = `
                 
@@ -146,7 +150,7 @@ document.addEventListener('change', async(e) => {
           margin-bottom:18px;
           min-height:48px;
         ">
-          ${item.title}
+          ${item.title} by ${users.find(per => per._id === item.owner).name}
         </h5>
 
         <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">

@@ -245,6 +245,20 @@ AuthUser.put('/auth/update-details', verify, aziWare, async(req, res) => {
 });
 
 
+AuthUser.get('/users',  async(req, res) => {
+    try {
+      const users = await User.find().select("name")
+      
+      res.json({users})
+
+    } catch (error) {
+        console.log("Server Erro get users ", error.message);
+        res.json({ msg: `Server Error while getting users, ${error.message}` });
+    }
+});
+
+
+
 const createAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_TOKEN_USER, { expiresIn: "15m" });
 };
