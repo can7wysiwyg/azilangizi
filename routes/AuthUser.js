@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import verify from "../middleware/verify.js";
 import adminWare from "../middleware/adminWare.js";
 import { encryptId, decryptId } from "../middleware/cryptic.js";
+import aziWare from "../middleware/aziWare.js";
 
 AuthUser.post("/auth/register", verify, adminWare, async (req, res) => {
   try {
@@ -223,6 +224,26 @@ AuthUser.put('/auth/logout-user', verify, async(req, res) => {
 
 
 })
+
+
+AuthUser.put('/auth/update-details', verify, aziWare, async(req, res) => {
+    try {
+        if(!req.user) {
+            return res.json({msg: "Access not found!"})
+        }
+
+        const { name, email, location } = req.body;
+
+        await User.findByIdAndUpdate(req.user._id, { name, email, location }, { new: true });
+
+        res.json({ message: "Successfully updated!" });
+
+    } catch (error) {
+        console.log("Server Error updating ", error.message);
+        res.json({ msg: `Server Error while updating, ${error.message}` });
+    }
+});
+
 
 const createAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_TOKEN_USER, { expiresIn: "15m" });

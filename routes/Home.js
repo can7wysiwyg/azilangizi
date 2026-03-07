@@ -192,6 +192,25 @@ try {
 })
 
 
+Home.get('/userprofile', async(req, res) => {
+
+    let msg;
+try {
+    
+    res.render('userprofile', {msg})
+    
+} catch (error) {
+    console.log(`failure to load userprofile page, ${error.message}`)
+
+    return res.render('userprofile', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
+
 
 Home.get('/addalangizi', async(req, res) => {
 
