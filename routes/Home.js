@@ -174,6 +174,25 @@ try {
 })
 
 
+Home.get('/managereports', async(req, res) => {
+
+    let msg;
+try {
+    
+    res.render('managereports', {msg})
+    
+} catch (error) {
+    console.log(`failure to load managereports page, ${error.message}`)
+
+    return res.render('managereports', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
+
 Home.get('/addalangizi', async(req, res) => {
 
     let msg;

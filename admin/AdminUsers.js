@@ -108,4 +108,45 @@ AdminUsers.delete('/admin/delete-user/:id', verify, adminWare, async(req, res) =
 
 })
 
+
+
+AdminUsers.get('/admin/all-reports', verify, adminWare, async(req, res) => {
+    try {
+        const { district, month, sort } = req.query;
+
+        let query = {};
+
+        if (district && district !== 'all') {
+            query.location = district;
+        }
+
+    
+        if (month && month !== 'all') {
+            const monthIndex = parseInt(month); 
+            const year = new Date().getFullYear();
+
+            const start = new Date(year, monthIndex, 1);         
+            const end = new Date(year, monthIndex + 1, 0, 23, 59, 59); 
+
+            query.createdAt = { $gte: start, $lte: end };
+        }
+
+        let sortOption = sort === 'oldest' ? { createdAt: 1 } : { createdAt: -1 };
+
+        const reports = await Report.find(query)
+            .populate('owner', 'name email location')
+            .sort(sortOption);
+
+        if (!reports || reports.length === 0) {
+            return res.json({ msg: "No reports found" });
+        }
+
+        return res.json({ reports });
+
+    } catch (error) {
+        console.log(`failed to get reports, ${error.message}`);
+        return res.json({ msg: `failed to get reports, ${error.message}` });
+    }
+});
+
 export default AdminUsers

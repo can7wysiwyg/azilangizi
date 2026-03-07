@@ -145,6 +145,8 @@ async function AddReport() {
                 if(result.msg) {
                      submitBtn.disabled = false
                       submitBtn.innerHTML = `
+                      <span>Try Again </span>
+
         
         `
 
@@ -155,6 +157,9 @@ async function AddReport() {
                 } else if(result.message) { 
 
                     submitBtn.disabled = false
+                       submitBtn.innerHTML = `
+                  <span>Add Another </span>
+        `
 
                     return statusMessage.innerHTML = `
                     <span>${result.message} </span>
