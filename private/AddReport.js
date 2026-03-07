@@ -13,7 +13,7 @@ AddReport.post("/post-report", verify, aziWare,  async (req, res) => {
     if(!req.user) {
         return res.json({msg: "Access not available"})
     }
-    const { title,  description, rType } = req.body;
+    const { title,  description, rType, location } = req.body;
     const rFile = req.files.rFile.tempFilePath;
    
     if (
@@ -21,7 +21,7 @@ AddReport.post("/post-report", verify, aziWare,  async (req, res) => {
             !description ||
       
       !rType ||
-      !rFile
+      !rFile || !location
     ) {
       return res.json({
         msg: "Field cannot be empty! Please check and try again.",
@@ -54,6 +54,7 @@ const newR = new Report({
     
      description, 
          rFile: uploadDoc.secure_url,
+         location,
      rType,
      owner: req.user._id
 
@@ -120,9 +121,9 @@ AddReport.put('/update-report/:id', verify, aziWare, async(req, res) => {
       return res.json({msg: "Resource identifier is missing!"})
     }
 
-    const { title, description, rType } = req.body;
+    const { title, description, rType, location } = req.body;
 
-    let updateData = { title, description, rType };
+    let updateData = { title, description, rType, location };
 
     const report = await Report.findOne({_id: id, owner: req.user._id});
 

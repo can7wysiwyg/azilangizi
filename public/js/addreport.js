@@ -25,6 +25,13 @@ async function AddReport() {
 
        const request = await fetch(`/public/show-report-enum`)
        const response = await request.json()
+
+       const rqD = await fetch(`https://malawi-api.onrender.com/api/districts_all`)
+           const rsD = await rqD.json()
+         const districts = rsD.districts
+
+         const data = districts[0].districts
+
         
        addContainer.innerHTML = `
        
@@ -64,6 +71,15 @@ async function AddReport() {
             </div>
 
             <div style="margin-bottom:24px;">
+              <label style="display:block; margin-bottom:8px; font-weight:600;">Choose District <span style="color:red;">*</span></label>
+              <select id="location" required style="width:100%; padding:14px; border:1px solid #ddd; border-radius:8px;">
+                <option value="">Select Your District</option>
+                ${data.map((d) => `<option value="${d._id}">${d.districtName}</option>`).join("")}
+              </select>
+            </div>
+
+
+            <div style="margin-bottom:24px;">
               <label style="display:block; margin-bottom:8px; font-weight:600;">Add Report <span style="color:red;">*</span></label>
               <input type="file" id="repor"  accept=".pdf, .docx, .epub, .xlsx, .xls">
               
@@ -92,16 +108,33 @@ async function AddReport() {
                 const title = document.getElementById('title').value 
                 const description = document.getElementById('description').value 
                 const rType = document.getElementById('rType').value
+                const location = document.getElementById('location').value
+
                 const file = document.getElementById("repor").files[0];
                 const submitBtn = document.getElementById('submitBtn') 
 
                 submitBtn.disabled = true
+
+
+                addContainer.innerHTML = `
+         
+                  <div class="loading-spinner text-center" style="margin-top: 26px">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted mt-2">Adding report...</p>
+            </div>
+        
+        `;
+
 
                 let formData = new FormData() 
 
 
                 formData.append('title', title)
                 formData.append('description', description)
+                formData.append('location', location)
+
                 formData.append('rType', rType) 
                 formData.append('rFile', file)
 

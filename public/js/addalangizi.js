@@ -79,7 +79,7 @@ async function LoadAdd() {
 
             
             <div style="margin-bottom:24px;">
-              <label style="display:block; margin-bottom:8px; font-weight:600;">Report Type <span style="color:red;">*</span></label>
+              <label style="display:block; margin-bottom:8px; font-weight:600;">Find District <span style="color:red;">*</span></label>
               <select id="aDst" required style="width:100%; padding:14px; border:1px solid #ddd; border-radius:8px;">
                 <option value="">Select District</option>
                 ${data.map((d) => `<option value="${d._id}">${d.districtName}</option>`).join("")}
