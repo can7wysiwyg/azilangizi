@@ -168,6 +168,25 @@ try {
 })
 
 
+Home.get('/manageusers', async(req, res) => {
+
+    let msg;
+try {
+    
+    res.render('manageusers', {msg})
+    
+} catch (error) {
+    console.log(`failure to load addalangizi page, ${error.message}`)
+
+    return res.render('manageusers', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
+
 
 
 
