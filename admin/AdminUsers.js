@@ -4,6 +4,16 @@ import User from "../models/UserModel.js"
 import Report from "../models/ReportModel.js"
 import verify from "../middleware/verify.js"
 import adminWare from "../middleware/adminWare.js"
+import nodemailer from "nodemailer"
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail', 
+    auth: {
+        user: "paulkssa@gmail.com", 
+        pass: "sjjq lkde qfdz cwwb"  
+    }
+});
+
 
 AdminUsers.get('/admin-user-reports/:id', verify, adminWare, async(req, res) => {
     try {
@@ -148,5 +158,87 @@ AdminUsers.get('/admin/all-reports', verify, adminWare, async(req, res) => {
         return res.json({ msg: `failed to get reports, ${error.message}` });
     }
 });
+
+
+
+AdminUsers.get('/admin-users-pure', verify, adminWare, async(req, res) => {
+    try {
+        
+        
+        let query = { role: "azilangizi" };
+
+    
+        
+        let users = await User.find(query).sort({_id: -1});
+
+        if (!users || users.length === 0) {
+            return res.json({ msg: "You have no users" });
+        }
+
+
+        
+
+        return res.json({ users });
+
+    } catch (error) {
+        console.log(`failure to get users, ${error.message}`);
+        return res.json({ msg: `failure to get users, ${error.message}` });
+    }
+});
+
+
+
+
+AdminUsers.post('/send-emails/:id', verify, adminWare, async(req, res) => {
+  try {
+    const { emails } = req.body;
+    const {id} = req.params;
+
+    const report = await Report.findById(id) 
+
+
+    if (!emails || emails.length === 0) {
+      return res.status(400).json({ msg: "No emails provided" });
+    }
+
+    const results = await Promise.allSettled(
+      emails.map(email =>
+        transporter.sendMail({
+          from: "paulkssa@gmail.com",
+          to: email,
+          subject: "Message from Admin",
+          html: `<div style="text-align: center">
+          <p>You have been sent a document!</p>
+
+          <p>access it at , <a href="${report.rFile}"
+             style="display:inline-block; padding:10px 20px; background:#000; color:#fff; text-decoration:none; border-radius:6px;"
+          download>this link</a> </p>
+          
+          
+          
+          </div>
+          
+          
+          
+          `,
+        })
+      )
+    );
+
+    const failed = results
+      .filter(r => r.status === "rejected")
+      .map(r => r.reason?.message);
+
+    return res.json({
+      message: `Sent ${results.length - failed.length}/${emails.length} emails successfully`,
+      msg: failed.length > 0 ? failed : undefined,
+    });
+
+  } catch (error) {
+    console.log(`failure to send emails, ${error.message}`);
+    return res.json({ msg: `failure to send emails, ${error.message}` });
+  }
+})
+
 
 export default AdminUsers

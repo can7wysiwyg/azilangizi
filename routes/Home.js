@@ -133,6 +133,32 @@ try {
 })
 
 
+Home.get('/sendfile/:id', async(req, res) => {
+
+    let msg;
+try {
+    const {id} = req.params
+
+    if(!id) {
+       return res.render('sendfile', {msg: `Authorization NOT available, ${error.message}` })   
+    }
+
+    res.render('sendfile', {msg})
+    
+} catch (error) {
+    console.log(`failure to load managereport page, ${error.message}`)
+
+    return res.render('sendfile', {msg: `Authorization NOT available, ${error.message}` })
+}
+
+
+
+})
+
+
+
+
+
 Home.get('/userreport/:id', async(req, res) => {
 
     let msg;

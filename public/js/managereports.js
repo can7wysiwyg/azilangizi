@@ -59,8 +59,8 @@ function ShowReports(reports, data) {
                                 ${item.owner?.name || 'Unknown'}
                             </div>
 
-                            <a href="${item.rFile}" 
-                               download="${item.title}" 
+                            <a href="/sendfile/${item._id}" 
+                                
                                style="
                                    background:#0d6efd;
                                    color:#fff;
@@ -70,8 +70,8 @@ function ShowReports(reports, data) {
                                    font-size:14px;
                                    font-weight:500;
                                ">
-                               <i class="fas fa-download" style="margin-right:6px;"></i>
-                               Download / View
+                               <i class="fas fa-envelope" style="margin-right:6px;"></i>
+                               Send To Staff
                             </a>
 
                         </div>
